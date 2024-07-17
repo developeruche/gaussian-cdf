@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-
 import {PrecisionMath} from "./utils/PrecisionMath.sol";
 
 contract GaussianCDF {
     using PrecisionMath for int256;
-
 
     //=================
     // Constants
@@ -14,13 +12,19 @@ contract GaussianCDF {
     int256 immutable STANDARD_DEVIATION; // standard deviation in 18 decimal fixed point
     int256 immutable MEAN; // mean in 18 decimal fixed point
 
+    //=================
+    // Constructor
+    //=================
+    constructor(int256 std, int256 mean) {
+        STANDARD_DEVIATION = std;
+        MEAN = mean;
+    }
 
-    int256 constant A1 = 170000000000000000;  // 0.170 in 18 decimal fixed point
-    int256 constant A2 = 89000000000000000;   // 0.089 in 18 decimal fixed point
-    int256 constant A3 = 5000000000000000;    // 0.005 in 18 decimal fixed point
-    int256 constant A4 = 2000000000000000;    // 0.002 in 18 decimal fixed point
-    int256 constant A5 = 700000000000000;     // 0.0007 in 18 decimal fixed point
-
+    int256 constant A1 = 170000000000000000; // 0.170 in 18 decimal fixed point
+    int256 constant A2 = 89000000000000000; // 0.089 in 18 decimal fixed point
+    int256 constant A3 = 5000000000000000; // 0.005 in 18 decimal fixed point
+    int256 constant A4 = 2000000000000000; // 0.002 in 18 decimal fixed point
+    int256 constant A5 = 700000000000000; // 0.0007 in 18 decimal fixed point
 
     function erf(int256 x) public pure returns (int256) {
         int256 absX = x >= 0 ? x : -x;

@@ -1,24 +1,28 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-// import {Test, console} from "forge-std/Test.sol";
-// import {Counter} from "../src/Counter.sol";
+import {Test, console} from "forge-std/Test.sol";
+import {GaussianCDF} from "../src/GaussianCDF.sol";
 
-// contract CounterTest is Test {
-//     Counter public counter;
+contract GaussianCDFTest is Test {
+    GaussianCDF public cdf;
 
-//     function setUp() public {
-//         counter = new Counter();
-//         counter.setNumber(0);
-//     }
+    function setUp() public {
+        // mean = 12, std = 5; in 18 decimal fixed point
+        cdf = new GaussianCDF(5000000000000000000, 12000000000000000000);
+    }
 
-//     function test_Increment() public {
-//         counter.increment();
-//         assertEq(counter.number(), 1);
-//     }
+    function testErf() public {
+        int256 x = 1000000000000000000; // 1 in 18 decimal fixed point
+        int256 result = cdf.erf(x);
+        console.log("erf(x) = ", result);
+        assertEq(result, -388422981738950516);
+    }
 
-//     function testFuzz_SetNumber(uint256 x) public {
-//         counter.setNumber(x);
-//         assertEq(counter.number(), x);
-//     }
-// }
+    function testCdf() public {
+        int256 x = 5500000000000000000; // 1 in 18 decimal fixed point
+        int256 result = cdf.cdf(x);
+        console.log("cdf(x) = ", result);
+        assertEq(result, 713375488833109878);
+    }
+}

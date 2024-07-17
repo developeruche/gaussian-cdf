@@ -8,9 +8,6 @@ library PrecisionMath {
     int256 constant TWO = 2e18;
     int256 constant SQRT2 = 1414213562373095048;
 
-
-
-
     function mul(int256 a, int256 b) internal pure returns (int256) {
         return (a * b) / PRECISION;
     }
